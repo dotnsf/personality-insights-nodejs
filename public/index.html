@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>PI RaderChart Sample</title>
+<script type="text/javascript" src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.min.js"></script>
+<script>
+$(function(){
+ $('#inputForm').submit( function(){
+  var text = $('#text').val();
+  var postdata = { 'text': text };
+  $.ajax({
+   type: 'POST',
+   dataType: 'json',
+   url: './postpi',
+   data: postdata,
+   success: function( data ){
+     //console.log( data );
+
+     if( data.error ){
+       console.log( data.error );
+     }else{
+       var ctx = $('#result');
+       var rdata = { labels: [], datasets: [] };
+       var dataset = {
+         label: '性格分析結果',
+         backgroundColor: 'rgba( 255, 99, 132, 0.2 )',
+         borderColor: 'rgba( 255, 99, 132, 1 )',
+         pointBackgroundColor: 'rgba( 255, 99, 132, 1 )',
+         pointBorderColor: '#fff',
+         pointHoverBackgroundColor: '#fff',
+         pointHoverBorderColor: 'rgba( 255, 99, 132, 1 )',
+         data: []
+       };
+       var options = {};
+
+       var result = data.result;
+       var personalitys = result.personality;
+       for( i = 0; i < personalitys.length; i ++ ){
+         var personality = personalitys[i];
+         var p_name = personality.name;
+         var p_category = personality.category;
+         var p_percentile = personality.percentile;
+         //console.log( p_name + "(" + p_category + "):" + p_percentile );
+         var p_children = personality.children;
+         for( j = 0; j < p_children.length; j ++ ){
+           var p_child = p_children[j];
+           var c_name = p_child.name;
+           var c_percentile = p_child.percentile;
+           //console.log( " " + c_name + ":" + c_percentile );
+
+           rdata.labels.push( c_name );
+           dataset.data.push( c_percentile );
+         }
+       }
+
+       rdata.datasets.push( dataset );
+       var myRadarChart = new Chart( ctx, {
+         type: 'radar',
+         data: rdata,
+         options: options
+       });
+     }
+   },
+   error: function( XMLHttpRequest, textStatus, errorThrown ){
+     console.log( textStatus + ": " + errorThrown );
+   }
+  });
+  return false;
+ });
+});
+</script>
+</head>
+<body>
+
+<form id="inputForm">
+<textarea id="text" rows="5" cols="80"> </textarea>
+<input type="submit" value="Submit"/>
+</form>
+
+<br/>
+
+<canvas id="result"></canvas>
+
+</body>
+</html>
+
+

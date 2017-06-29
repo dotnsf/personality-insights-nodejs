@@ -1,0 +1,19 @@
+{
+    "name"         : "pi_raderchart",
+    "version"      : "0.0.1",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "express": "4.1.x",
+        "body-parser": "1.17.x",
+        "cfenv":"~1.0.0",
+        "fs":"~0.0.1",
+        "watson-developer-cloud":"2.15.x"
+    },
+    "repository": {},
+    "engines": {
+        "node": "4.x"
+    }
+}
+
