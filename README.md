@@ -28,6 +28,8 @@ Sample Node.js application using IBM Watson Personality Insights API.
 
 This code is licensed under MIT.
 
+This code use Chart.js(http://www.chartjs.org/) as chart drawing library.
+
 ## Copyright
 
 2017 K.Kimura @ Juge.Me all rights reserved.
